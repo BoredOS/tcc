@@ -1,0 +1,9 @@
+name = "tcc"
+version = "1.0.0"
+description = "Tiny C Compiler for BoredOS"
+author = "Fabrice Bellard"
+license = "LGPLv2"
+
+[install]
+bin = "/bin"
+assets = "/usr"

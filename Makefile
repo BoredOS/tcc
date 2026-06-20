@@ -63,6 +63,22 @@ install: all
 	cp libtcc1.a $(DESTDIR)/usr/lib/
 	cp include/*.h $(DESTDIR)/usr/lib/tcc/include/
 
+.PHONY: bup
+bup: all
+	rm -rf build/package
+	mkdir -p build/package/bin
+	mkdir -p build/package/assets/lib/tcc/include
+	cp tcc.elf build/package/bin/
+	cp libtcc1.a build/package/assets/lib/tcc/
+	cp libtcc1.a build/package/assets/lib/
+	cp include/*.h build/package/assets/lib/tcc/include/
+	cp MANIFEST.toml build/package/
+	mkdir -p build
+	tar -cf build/tcc.tar -C build/package MANIFEST.toml bin assets
+	lz4 -f build/tcc.tar build/tcc.bup
+	rm -f build/tcc.tar
+	rm -rf build/package
+
 clean:
 	rm -f tcc.elf libtcc1.a
 	rm -rf build
