@@ -1,8 +1,8 @@
 # Copyright (c) 2026 Christiaan (chris@boreddev.nl)
 # Tiny C Compiler Standalone Makefile
 
-CC = x86_64-elf-gcc
-LD = x86_64-elf-ld
+CC = x86_64-boredos-gcc
+LD = x86_64-boredos-ld
 
 ifneq ($(BOREDOS_SDK),)
   ifeq ($(wildcard $(BOREDOS_SDK)/lib/libc.a),)
@@ -55,7 +55,7 @@ bup: all
 	cp libtcc1.a build/package/assets/lib/
 	cp include/*.h build/package/assets/lib/tcc/include/
 	cp MANIFEST.toml build/package/
-	x86_64-elf-strip --strip-unneeded build/package/bin/*.elf 2>/dev/null || true
+	x86_64-boredos-strip --strip-unneeded build/package/bin/*.elf 2>/dev/null || true
 	tar -cf build/tcc.tar -C build/package MANIFEST.toml bin assets
 	lz4 -f build/tcc.tar build/tcc.bup
 	rm -f build/tcc.tar
