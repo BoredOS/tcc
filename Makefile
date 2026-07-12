@@ -2,23 +2,6 @@
 # Tiny C Compiler Standalone Makefile
 
 CC = x86_64-boredos-gcc
-LD = x86_64-boredos-ld
-
-ifneq ($(BOREDOS_SDK),)
-  ifeq ($(wildcard $(BOREDOS_SDK)/lib/libc.a),)
-    BOOTSTRAP_SDK = $(BOREDOS_SDK)
-    SDK_PATH      = $(BOREDOS_SDK)
-  else
-    SDK_PATH      = $(BOREDOS_SDK)
-  endif
-endif
-
-ifeq ($(SDK_PATH),)
-  SDK_PATH = $(abspath build/sdk)
-  ifeq ($(wildcard $(SDK_PATH)/lib/libc.a),)
-    BOOTSTRAP_SDK = $(SDK_PATH)
-  endif
-endif
 
 DESTDIR ?= $(abspath build/dist)
 
@@ -28,9 +11,9 @@ all: $(APPS) libtcc1.a
 
 tcc.elf: tcc.c config.h tcc.h libtcc1.a
 	$(CC) -O2 -m64 -march=x86-64 -fno-stack-protector \
-	    -fno-stack-check -fno-lto -fno-pie -ffreestanding -nostdlib -static -no-pie \
-	    -DONE_SOURCE=1 -DTARGETOS_BoredOS=1 -I. -I$(SDK_PATH)/include \
-	    -Ttext=0x40000000 $(SDK_PATH)/lib/crt0.o $(SDK_PATH)/lib/crti.o tcc.c $(SDK_PATH)/lib/libc.a $(SDK_PATH)/lib/crtn.o -o tcc.elf
+	    -fno-stack-check -fno-lto -fno-pie -ffreestanding -static -no-pie \
+	    -DONE_SOURCE=1 -DTARGETOS_BoredOS=1 -I. \
+	    -Wl,-Ttext=0x40000000 tcc.c -o tcc.elf
 
 libtcc1.a: build_libtcc1.sh
 	sh ./build_libtcc1.sh
