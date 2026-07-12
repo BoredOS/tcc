@@ -1,7 +1,9 @@
 #!/bin/bash
+set -e
+
 CC=${CC:-x86_64-boredos-gcc}
 AR=${AR:-x86_64-boredos-ar}
-CFLAGS="-O2 -m64 -march=x86-64 -fno-stack-protector -ffreestanding -nostdlib -I. -I./include -I../../../sdk/include"
+CFLAGS="-O2 -m64 -march=x86-64 -fno-stack-protector -ffreestanding -nostdlib -I. -I./include"
 
 echo "Building libtcc1.a..."
 $CC $CFLAGS -c lib/libtcc1.c -o libtcc1.o

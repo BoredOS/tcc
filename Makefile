@@ -16,7 +16,7 @@ tcc.elf: tcc.c config.h tcc.h libtcc1.a
 	    -Wl,-Ttext=0x40000000 tcc.c -o tcc.elf
 
 libtcc1.a: build_libtcc1.sh
-	sh ./build_libtcc1.sh
+	CC="$(CC)" sh ./build_libtcc1.sh
 
 install: all
 	mkdir -p $(DESTDIR)/bin
