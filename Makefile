@@ -11,9 +11,10 @@ all: $(APPS) libtcc1.a
 
 tcc.elf: tcc.c config.h tcc.h libtcc1.a
 	$(CC) -O2 -m64 -march=x86-64 -fno-stack-protector \
-	    -fno-stack-check -fno-lto -fno-pie -ffreestanding -static -no-pie \
+	    -fno-stack-check \
 	    -DONE_SOURCE=1 -DTARGETOS_BoredOS=1 -I. \
-	    -Wl,-Ttext=0x40000000 tcc.c -o tcc.elf
+	    -Wl,-z,max-page-size=0x1000 -Wl,-dynamic-linker,/usr/lib/ld.so -Wl,-rpath,/usr/lib:/lib \
+	    tcc.c -lm -o tcc.elf
 
 libtcc1.a: build_libtcc1.sh
 	CC="$(CC)" sh ./build_libtcc1.sh
